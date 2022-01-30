@@ -48,13 +48,27 @@ function closeMenu() {
   navMenu.classList.remove("active");
 }
 
-// window.onload = function () {
-//   window.addEventListener("scroll", navOnScroll);
+const readBtn = document.querySelector(".read-more-btn");
+const readBtnTwo = document.querySelector(".read-more-btn-2");
+const readText = document.querySelector(".read-more-text");
+const readTextTwo = document.querySelector(".read-more-text-2");
 
-//   function navOnScroll() {
-//     if (window.scrollY >= 5) {
-//       hamburger.classList.toggle("active");
-//       navMenu.classList.toggle("active");
-//     }
-//   }
-// };
+readBtn.addEventListener("click", function () {
+  if (readText.style.display == "none") {
+    readText.style.display = "block";
+    readBtn.innerHTML = "Read less...";
+  } else {
+    readText.style.display = "none";
+    readBtn.innerHTML = "Read more...";
+  }
+});
+
+readBtnTwo.addEventListener("click", function () {
+  if (readTextTwo.style.display == "none") {
+    readTextTwo.style.display = "block";
+    readBtnTwo.innerHTML = "Read less...";
+  } else {
+    readTextTwo.style.display = "none";
+    readBtnTwo.innerHTML = "Read more...";
+  }
+});
