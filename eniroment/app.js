@@ -21,10 +21,8 @@ function init() {
     70,
     window.innerWidth / window.innerHeight,
     0.01,
-    60
+    40
   );
-  camera.position.set(0, 0, 2);
-  camera.lookAt(0, 0, 0);
 
   controls = new OrbitControls(camera, canvas);
   controls.update();
@@ -64,7 +62,7 @@ function onSelect() {
     function (gltf) {
       obj = gltf.scene;
       obj.scale.set(0.3, 0.3, 0.3);
-      obj.position.set(0, 0, -5);
+      obj.position.set(0, 0, -4);
       // .applyMatrix4(controller.matrixWorld);
       // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
       obj.rotation.set(20.4, 0, 0);
