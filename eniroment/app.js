@@ -35,7 +35,7 @@ function init() {
     canvas: canvas,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
 
   //   /////////////// this is just a test to see if everything works/////////////////
@@ -50,7 +50,6 @@ function init() {
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
-  controller.addEventListener("click", onSelect);
   scene.add(controller);
 
   enviroment.appendChild(ARButton.createButton(renderer));
@@ -65,8 +64,9 @@ function onSelect() {
     function (gltf) {
       obj = gltf.scene;
       obj.scale.set(0.3, 0.3, 0.3);
-      obj.position.set(0, 0, -5).applyMatrix4(controller.matrixWorld);
-      obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
+      obj.position.set(0, 0, -5);
+      // .applyMatrix4(controller.matrixWorld);
+      // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
       obj.rotation.set(20.4, 0, 0);
       scene.add(gltf.scene);
     },
