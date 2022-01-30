@@ -4,10 +4,12 @@ import { OrbitControls } from "./OrbitControls.js";
 import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js";
 
 const canvas = document.getElementById("webgl");
+const enviroment = document.getElementById("enviroment");
 
 let scene, camera, renderer;
 let obj;
 let controls;
+let controller;
 
 init();
 animate();
@@ -33,7 +35,8 @@ function init() {
     canvas: canvas,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+  renderer.xr.enabled = true;
 
   //   /////////////// this is just a test to see if everything works/////////////////
   //   const geometry = new THREE.BoxBufferGeometry(0.3, 0.3, 0.3);
@@ -42,13 +45,25 @@ function init() {
   //   cube.position.set(0, 0, -1);
   //   scene.add(cube);
 
+  const light = new THREE.AmbientLight();
+  scene.add(light);
+
+  controller = renderer.xr.getController(0);
+  controller.addEventListener("select", onSelect);
+
+  enviroment.appendChild(ARButton.createButton(renderer));
+  window.addEventListener("resize", onWindowResize, false);
+}
+
+function onSelect() {
+  console.log("select");
   let loader = new GLTFLoader();
   loader.load(
     "../assets/3dmodel/firstPinBlue.gltf",
     function (gltf) {
       obj = gltf.scene;
       obj.scale.set(0.3, 0.3, 0.3);
-      obj.position.set(0, 0, -1);
+      obj.position.set(0, 0, -5).applyMatrix4(controller.matrixWorld);
       obj.rotation.set(20.4, 0, 0);
       scene.add(gltf.scene);
     },
@@ -57,19 +72,13 @@ function init() {
       console.log(error);
     }
   );
-
-  const light = new THREE.AmbientLight();
-  scene.add(light);
-
-  document.body.appendChild(ARButton.createButton(renderer));
-  window.addEventListener("resize", onWindowResize, false);
 }
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
   controls.update();
 }
 
