@@ -50,6 +50,7 @@ function init() {
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
+  controller.addEventListener("touchstart", onSelect);
   scene.add(controller);
 
   enviroment.appendChild(ARButton.createButton(renderer));
@@ -65,6 +66,7 @@ function onSelect() {
       obj = gltf.scene;
       obj.scale.set(0.3, 0.3, 0.3);
       obj.position.set(0, 0, -5).applyMatrix4(controller.matrixWorld);
+      obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
       obj.rotation.set(20.4, 0, 0);
       scene.add(gltf.scene);
     },
