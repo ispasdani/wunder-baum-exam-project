@@ -50,6 +50,7 @@ function init() {
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
+  scene.add(controller);
 
   enviroment.appendChild(ARButton.createButton(renderer));
   window.addEventListener("resize", onWindowResize, false);
