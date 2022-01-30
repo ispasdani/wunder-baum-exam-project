@@ -50,7 +50,7 @@ function init() {
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
-  controller.addEventListener("touchstart", onSelect);
+  controller.addEventListener("click", onSelect);
   scene.add(controller);
 
   enviroment.appendChild(ARButton.createButton(renderer));
