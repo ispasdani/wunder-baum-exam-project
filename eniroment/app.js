@@ -1,6 +1,6 @@
 import * as THREE from "./three.module.js";
 import { GLTFLoader } from "./GLTFLoader.js";
-import { OrbitControls } from "./OrbitControls.js";
+// import { OrbitControls } from "./OrbitControls.js";
 import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js";
 
 const canvas = document.getElementById("webgl");
@@ -8,7 +8,7 @@ const enviroment = document.getElementById("enviroment");
 
 let scene, camera, renderer;
 let obj;
-let controls;
+// let controls;
 let controller;
 
 init();
@@ -24,8 +24,8 @@ function init() {
     40
   );
 
-  controls = new OrbitControls(camera, canvas);
-  controls.update();
+  // controls = new OrbitControls(camera, canvas);
+  // controls.update();
 
   renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -80,7 +80,7 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
-  controls.update();
+  // controls.update();
 }
 
 // function animate() {
@@ -94,6 +94,6 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
-  controls.update();
+  // controls.update();
   renderer.render(scene, camera);
 }
