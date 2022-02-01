@@ -104,10 +104,6 @@ function animate() {
   renderer.setAnimationLoop(render);
 }
 
-// read more about hit testing here:
-// https://github.com/immersive-web/hit-test/blob/master/hit-testing-explainer.md
-// https://web.dev/ar-hit-test/
-
 // hit testing provides the position and orientation of the intersection point, but nothing about the surfaces themselves.
 
 let hitTestSource = null;
@@ -128,7 +124,6 @@ async function initializeHitTestSource() {
 
   // We're going to use the reference space of "local" for drawing things.
   // which gives us stability in terms of the environment.
-  // read more here: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace
   localSpace = await session.requestReferenceSpace("local");
 
   // set this to true so we don't request another hit source for the rest of the session
