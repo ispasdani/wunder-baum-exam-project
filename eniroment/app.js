@@ -3,12 +3,10 @@ import { GLTFLoader } from "./GLTFLoader.js";
 // import { OrbitControls } from "./OrbitControls.js";
 import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js";
 
-const canvas = document.getElementById("webgl");
-const enviroment = document.getElementById("enviroment");
-
 let container;
 let camera, scene, renderer;
 let reticle;
+let controller;
 
 init();
 animate();
@@ -36,7 +34,11 @@ function init() {
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
-  addReticleToScene(); // circle visual aid
+  controller = renderer.xr.getController(0);
+  controller.addEventListener("select", onSelect);
+  scene.add(controller);
+
+  addReticleToScene();
 
   const button = ARButton.createButton(renderer, {
     requiredFeatures: ["hit-test"], // notice a new required feature
@@ -65,6 +67,24 @@ function addReticleToScene() {
   // reticle.add(new THREE.AxesHelper(1));
 }
 
+function onSelect() {
+  if (reticle.visible) {
+    // cone added at the point of a hit test
+    // replace the next lines to add your own object in space
+    const geometry = new THREE.CylinderBufferGeometry(0, 0.05, 0.2, 32);
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xffffff * Math.random(),
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+
+    // set the position of the cylinder based on where the reticle is
+    mesh.position.setFromMatrixPosition(reticle.matrix);
+    mesh.quaternion.setFromRotationMatrix(reticle.matrix);
+
+    scene.add(mesh);
+  }
+}
+
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -89,7 +109,7 @@ let hitTestSourceInitialized = false;
 // This function gets called just once to initialize a hitTestSource
 // The purpose of this function is to get a) a hit test source and b) a reference space
 async function initializeHitTestSource() {
-  const session = renderer.xr.getSession();
+  const session = renderer.xr.getSession(); // XRSession
 
   // Reference spaces express relationships between an origin and the world.
 
