@@ -5,8 +5,9 @@ import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARB
 
 let container;
 let camera, scene, renderer;
-let obj;
+let reticle;
 let controller;
+let obj;
 
 init();
 animate();
@@ -50,27 +51,18 @@ function init() {
 }
 
 function addReticleToScene() {
-  let loader = new GLTFLoader();
-  loader.load(
-    "../assets/3dmodel/firstPinBlue.gltf",
-    function (gltf) {
-      obj = gltf.scene;
-      obj.scale.set(0.3, 0.3, 0.3);
-      obj.position.set(0, 0, -4);
-      // .applyMatrix4(controller.matrixWorld);
-      // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
-      obj.rotation.set(20.4, 0, 0);
-      obj.matrixAutoUpdate = false;
-      obj.visible = false; // we start with the reticle not visible
-      scene.add(gltf.scene);
-    },
-    undefined,
-    function (error) {
-      console.log(error);
-    }
+  const geometry = new THREE.RingBufferGeometry(0.15, 0.2, 32).rotateX(
+    -Math.PI / 2
   );
+  const material = new THREE.MeshBasicMaterial();
+
+  reticle = new THREE.Mesh(geometry, material);
+
   // we will calculate the position and rotation of this reticle every frame manually
   // in the render() function so matrixAutoUpdate is set to false
+  reticle.matrixAutoUpdate = false;
+  reticle.visible = false; // we start with the reticle not visible
+  scene.add(reticle);
 
   // optional axis helper you can add to an object
   // reticle.add(new THREE.AxesHelper(1));
@@ -79,18 +71,26 @@ function addReticleToScene() {
 function onSelect() {
   if (reticle.visible) {
     // cone added at the point of a hit test
-    // replace the next lines to add your own object in space
-    const geometry = new THREE.CylinderBufferGeometry(0, 0.05, 0.2, 32);
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xffffff * Math.random(),
-    });
-    const mesh = new THREE.Mesh(geometry, material);
+    let loader = new GLTFLoader();
+    loader.load(
+      "../assets/3dmodel/firstPinBlue.gltf",
+      function (gltf) {
+        obj = gltf.scene;
+        obj.scale.set(0.3, 0.3, 0.3);
+        // .applyMatrix4(controller.matrixWorld);
+        // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
+        obj.rotation.set(20.4, 0, 0);
+        obj.position.setFromMatrixPosition(reticle.matrix);
+        obj.quaternion.setFromRotationMatrix(reticle.matrix);
+        scene.add(gltf.scene);
+      },
+      undefined,
+      function (error) {
+        console.log(error);
+      }
+    );
 
     // set the position of the cylinder based on where the reticle is
-    mesh.position.setFromMatrixPosition(reticle.matrix);
-    mesh.quaternion.setFromRotationMatrix(reticle.matrix);
-
-    scene.add(mesh);
   }
 }
 
