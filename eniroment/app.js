@@ -79,7 +79,6 @@ function onSelect() {
         obj.scale.set(0.3, 0.3, 0.3);
         // .applyMatrix4(controller.matrixWorld);
         // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
-        obj.rotation.set(20.4, 0, 0);
         obj.position.setFromMatrixPosition(reticle.matrix);
         obj.quaternion.setFromRotationMatrix(reticle.matrix);
         scene.add(gltf.scene);
