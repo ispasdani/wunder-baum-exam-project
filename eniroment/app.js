@@ -5,7 +5,7 @@ import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARB
 
 let container;
 let camera, scene, renderer;
-let reticle;
+let obj;
 let controller;
 
 init();
@@ -50,18 +50,27 @@ function init() {
 }
 
 function addReticleToScene() {
-  const geometry = new THREE.RingBufferGeometry(0.15, 0.2, 32).rotateX(
-    -Math.PI / 2
+  let loader = new GLTFLoader();
+  loader.load(
+    "../assets/3dmodel/firstPinBlue.gltf",
+    function (gltf) {
+      obj = gltf.scene;
+      obj.scale.set(0.3, 0.3, 0.3);
+      obj.position.set(0, 0, -4);
+      // .applyMatrix4(controller.matrixWorld);
+      // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
+      obj.rotation.set(20.4, 0, 0);
+      obj.matrixAutoUpdate = false;
+      obj.visible = false; // we start with the reticle not visible
+      scene.add(gltf.scene);
+    },
+    undefined,
+    function (error) {
+      console.log(error);
+    }
   );
-  const material = new THREE.MeshBasicMaterial();
-
-  reticle = new THREE.Mesh(geometry, material);
-
   // we will calculate the position and rotation of this reticle every frame manually
   // in the render() function so matrixAutoUpdate is set to false
-  reticle.matrixAutoUpdate = false;
-  reticle.visible = false; // we start with the reticle not visible
-  scene.add(reticle);
 
   // optional axis helper you can add to an object
   // reticle.add(new THREE.AxesHelper(1));
