@@ -76,7 +76,7 @@ function onSelect() {
       "../assets/3dmodel/firstPinBlue.gltf",
       function (gltf) {
         obj = gltf.scene;
-        obj.scale.set(0.1, 0.1, 0.1);
+        obj.scale.set(0.05, 0.05, 0.05);
         // .applyMatrix4(controller.matrixWorld);
         // obj.quaternion.setFromRotationMatrix(controller.matrixWorld);
         obj.position.setFromMatrixPosition(reticle.matrix);
