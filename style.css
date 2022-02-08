@@ -616,12 +616,12 @@ nav {
   border-radius: 20px;
 }
 
-.video {
-  height: 300px;
+.video-container {
+  /* height: 300px;
   width: 400px;
   background-color: white;
   border: 5px solid #f04122;
-  border-radius: 30px;
+  border-radius: 30px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -868,7 +868,7 @@ nav {
     font-size: 80px;
   }
   .video {
-    margin: 40px;
+    margin: 20px;
     width: 300px;
     height: 200px;
   }
